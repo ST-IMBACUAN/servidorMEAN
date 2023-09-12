@@ -1,0 +1,48 @@
+const mongoose =require("mongoose");
+
+
+const dbConnect = () => {
+    const DB_URI = process.env.DB_URI;
+
+
+    return mongoose.connect(DB_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
+    .then(() => {
+        console.log('*** CONEXION CORRECTA ***');
+    })
+    .catch((err) => {
+        console.log(err, '*** ERROR DE CONEXION ***');
+    });
+};
+
+module.exports = dbConnect;
+ 
+
+
+
+
+ const MongoClient = require('mongodb').MongoClient;
+
+const DB_URI = process.env.DB_URI;
+const dbName = 'dbapi';
+
+// Función para conectarse a la base de datos
+const dbConnect = (callback) => {
+    MongoClient.connect(DB_URI, (err, client) => {
+        if (err) {
+            console.error('Error al conectarse a la base de datos:', err);
+            return;
+        }
+        
+        const db = client.db(dbName);
+        console.log('Conexión exitosa a la base de datos');
+        
+        callback(db); // Pasar el objeto de base de datos al callback
+        
+        client.close();
+    });
+};
+
+module.exports = dbConnect;
